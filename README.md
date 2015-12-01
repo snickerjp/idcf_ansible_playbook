@@ -11,6 +11,9 @@ cd /opt/idcf_ansible_playbook
 # create server pem
 cat server.key server.crt >> roles/ansible-haproxy-ssl/files/hogehoge.pem
 
+# set idcf API settings
+vi cloudstack.ini
+
 # copy template
 sh init.sh
 
