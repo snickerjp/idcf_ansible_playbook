@@ -1,0 +1,14 @@
+---
+- hosts: haproxy-vm
+  connection: ssh
+  sudo: yes
+  vars:
+    vm_name: haproxy-vm-1
+    firewall_ip: [idcf public ip]
+    key_name: [idcf collect pubkey]
+    #zone_name: augusta
+    zone_name: tesla
+  roles:
+     - haproxy
+     - ansible-haproxy-ssl
+     - apt-upgrade

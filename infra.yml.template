@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  connection: local 
+  vars:
+    vm_name: haproxy-vm-1
+    firewall_ip: [idcf public ip]
+    key_name: [idcf collect pubkey]
+    #zone_name: augusta
+    zone_name: tesla
+  tasks:
+    - name: sshのキーをクラウドに送信する
+      local_action:
+        module: cs_sshkeypair
+        name: "{{ key_name }}"
+        public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+# * tips: list template
+# cloudmonkey list templates templatefilter=all filter=id,name |grep -1 Ubuntu
+
+    - name: 仮想マシンを作成する
+      local_action:
+        module: cs_instance
+        name: "{{ vm_name }}"
+        hypervisor: VMware
+        #template: c1387e4f-4a72-4d8b-ba6b-5276361aaa6b #west 
+        # EAST [Ubuntu Server 14.04 LTS 64-bit]
+        template: 90fec2e6-4fdf-4df6-bdad-c3eb5d57a6f6
+        service_offering: light.S1
+        ssh_key: "{{ key_name }}"
+        zone: "{{ zone_name }}"
+
+    - name: httpを通過させるようファイヤーウォールの設定を修正
+      local_action:
+        module: cs_firewall
+        ip_address: "{{ firewall_ip }}"
+        start_port: 80
+        end_port: 80
+        cidr: 0.0.0.0/0
+
+    - name: sshを通過させるようファイヤーウォールの設定を修正
+      local_action:
+        module: cs_firewall
+        ip_address: "{{ firewall_ip }}"
+        start_port: 22
+        end_port: 22
+        cidr: 0.0.0.0/0
+
+    - name: ポートフォワーディング80-> haproxy-vm-1:80
+      local_action:
+        module: cs_portforward
+        ip_address: "{{ firewall_ip }}"
+        vm: "{{ vm_name }}"
+        public_port: 80
+        private_port: 80
+        zone: "{{ zone_name }}"
+
+    - name: ポートフォワーディング22-> haproxy-vm-1:22
+      local_action:
+        module: cs_portforward
+        ip_address: "{{ firewall_ip }}"
+        vm: "{{ vm_name }}"
+        public_port: 22
+        private_port: 22
+        zone: "{{ zone_name }}"

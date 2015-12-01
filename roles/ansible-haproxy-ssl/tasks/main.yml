@@ -1,0 +1,41 @@
+---
+- name: Get HAProxy version.
+  command: haproxy -v
+  register: haproxy_version_result
+  changed_when: false
+  always_run: yes
+  tags: haproxy-ssl
+
+- name: Set HAProxy version.
+  set_fact:
+    haproxy_version: "{{ '1.5' if '1.5.' in haproxy_version_result.stdout else '1.4' }}"
+  tags: haproxy-ssl
+
+- name: Copy pem file
+  copy: src={{ item }} dest=/etc/ssl/private/{{ item }}
+  with_items:
+    - "{{ haproxy_pem }}"
+  #when: (ansible_distribution == "Ubuntu")
+  tags: haproxy-ssl
+ 
+#- name: Create haproxy configuration file
+#  action: >
+#      template src=templates/haproxy.cfg.j2
+#      dest=/etc/haproxy/haproxy.cfg
+#      mode=0644 owner=root group=root
+#  notify: restart haproxy
+#  tags: haproxy-ssl
+
+- name: Copy HAProxy configuration in place.
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+  notify: restart haproxy
+  tags: haproxy-ssl
+
+- name: Ensure HAProxy is started and enabled on boot.
+  service: name=haproxy state=started enabled=yes
+  tags: haproxy-ssl
+
+# tasks file for ansible-haproxy-ssl

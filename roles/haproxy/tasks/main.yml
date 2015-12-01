@@ -1,0 +1,23 @@
+---
+- name: be sure installed
+  yum: name={{item}} state=installed enablerepo=epel
+  with_items:
+    - haproxy
+  when: (ansible_distribution != "Amazon") and
+        (ansible_distribution != "RedHat") and
+        (ansible_distribution != "Ubuntu")
+  ignore_errors: true
+  tags: haproxy
+
+- name: haproxy v1.5 ppa
+  apt_repository: repo='ppa:vbernat/haproxy-1.5'
+  when: (ansible_distribution == "Ubuntu")
+  tags: haproxy
+
+- name: be sure haproxy is installed
+  apt: name={{item}} state=latest
+  with_items:
+    - haproxy
+  when: (ansible_distribution == "Ubuntu") 
+  tags: haproxy
+

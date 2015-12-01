@@ -1,0 +1,10 @@
+[haproxy-vm]
+XXX.XXX.XXX.XXX
+
+[haproxy-vm:vars]
+ansible_ssh_user=root
+
+[localhost]
+localhost
+
+

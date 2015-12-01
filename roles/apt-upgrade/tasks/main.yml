@@ -1,0 +1,16 @@
+---
+- name: Update apt
+  apt: update_cache=yes
+  when: (ansible_distribution == "Ubuntu")
+  tags: apt-upgrade
+
+- name: Upgrade apt
+  apt: upgrade=full
+  when: (ansible_distribution == "Ubuntu")
+  tags: apt-upgrade
+
+- name: Make a general dist-upgrade
+  apt: upgrade=dist
+  when: (ansible_distribution == "Ubuntu")
+  tags: apt-upgrade
+

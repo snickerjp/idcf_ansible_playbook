@@ -1,0 +1,7 @@
+[cloudstack]
+# IDCF WEST endpoint
+#endpoint = idcf_end_point
+# IDCF EAST endpoint
+endpoint = idcf_end_point
+key = API Key
+secret = Secret Key
