@@ -7,6 +7,11 @@ Requirements
 ------------
 
 * HAProxy => v1.5
+* Server pem
+```
+cat server.key server.crt >> hogehoge.pem
+cp hogehoge.pem [ansible-haproxy-ssl]/files/hogehoge.pem
+```
 
 Role Variables
 --------------
