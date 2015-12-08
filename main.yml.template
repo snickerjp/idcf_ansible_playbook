@@ -9,6 +9,6 @@
     #zone_name: augusta
     zone_name: tesla
   roles:
+     - apt-upgrade
      - haproxy
      - ansible-haproxy-ssl
-     - apt-upgrade
