@@ -28,3 +28,18 @@ ansible-playbook infra.yml -i hosts
 vi main.yml # replace settings
 ansible-playbook main.yml -i hosts -c ssh 
 ```
+
+### for Vagrant
+```bash
+vi main.yml
+```
+
+```diff
+@@ -1,5 +1,5 @@
+ ---
+-- hosts: haproxy-vm
++- hosts: default
+   connection: ssh
+   sudo: yes
+   vars:
+```
