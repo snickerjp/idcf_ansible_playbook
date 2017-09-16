@@ -1,15 +1,13 @@
-# Provisioning for Ubuntu 14.04 Ansible
+# Provisioning for Ubuntu 16.04 Ansible
+# Ansible 2.0
 
 ## Usage
 
 ```bash
 ssh-keygen -b 2048
 
-# move project path
-cd /opt/idcf_ansible_playbook
-
-# create server pem
-cat server.key server.crt >> roles/ansible-haproxy-ssl/files/hogehoge.pem
+# project path
+cd /opt/idcf_ansible_k8s_playbook
 
 # set idcf API settings
 vi cloudstack.ini
@@ -17,16 +15,16 @@ vi cloudstack.ini
 # copy template
 sh init.sh
 
-#cp hosts.template hosts # init.sh で、済
-vi hosts
+#cp inventory.template inventory # init.sh で、済
+vi inventory
 
 #cp infra.yml.template infra.yml # init.sh で、済
 vi infra.yml # replace settings
-ansible-playbook infra.yml -i hosts 
+ansible-playbook infra.yml -i inventory 
 
 #cp main.yml.template main.yml # init.sh で、済
 vi main.yml # replace settings
-ansible-playbook main.yml -i hosts -c ssh 
+ansible-playbook main.yml -i inventory -c ssh 
 ```
 
 ### for Vagrant
@@ -34,12 +32,3 @@ ansible-playbook main.yml -i hosts -c ssh
 vi main.yml
 ```
 
-```diff
-@@ -1,5 +1,5 @@
- ---
--- hosts: haproxy-vm
-+- hosts: default
-   connection: ssh
-   sudo: yes
-   vars:
-```
