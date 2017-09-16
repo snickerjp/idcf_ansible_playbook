@@ -1,8 +1,8 @@
-[haproxy-vm]
+[pods]
 XXX.XXX.XXX.XXX
 
-[haproxy-vm:vars]
-ansible_ssh_user=root
+[pods:vars]
+ansible_ssh_user=core
 
 [localhost]
 localhost
