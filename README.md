@@ -7,7 +7,7 @@
 ssh-keygen -b 2048
 
 # project path
-cd /opt/idcf_ansible_k8s_playbook
+cd /opt/idcf_ansible_playbook
 
 # set idcf API settings
 vi cloudstack.ini
